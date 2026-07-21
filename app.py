@@ -12,6 +12,8 @@ import random
 import uuid
 
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from game_session import GameSession
@@ -23,8 +25,25 @@ _ARCHETYPES = _GRID["archetypes"]
 _DEFICIT_WEIGHTS = _GRID["deficit_weights"]
 _VIABLE_COMBOS = _GRID["viable_combos_by_deficit"]
 
+# §3.7's locked 4-tier roster -- the only combos with a validated mean
+# win% benchmark. Dev-mode draws can land on other non-dead combos from the
+# extended grid (matchup_grid.json) that were never assigned a named tier
+# or a benchmark number; the client shows "no locked-tier benchmark" for those.
+LOCKED_TIERS = {
+    (3, 30, 65): {"name": "Easy", "mean_win_pct": 79.3},
+    (1, 60, 50): {"name": "Medium", "mean_win_pct": 54.7},
+    (3, 30, 50): {"name": "Hard", "mean_win_pct": 21.7},
+    (1, 60, 35): {"name": "Longshot", "mean_win_pct": 4.2},
+}
+
 app = FastAPI()
 SESSIONS: dict[str, dict] = {}  # session_id -> {"session": GameSession, "matchup": {...}}
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+
+@app.get("/")
+def index():
+    return FileResponse("static/index.html")
 
 
 def draw_matchup():
@@ -67,6 +86,7 @@ def start_session():
     )
     state = gs.start()
     SESSIONS[session_id] = {"session": gs, "matchup": matchup}
+    tier = LOCKED_TIERS.get((matchup["deficit"], matchup["time_budget"], matchup["start_yardline"]))
     return {
         "session_id": session_id,
         "matchup": {
@@ -74,6 +94,7 @@ def start_session():
             "deficit": matchup["deficit"],
             "time_budget": matchup["time_budget"],
             "start_yardline": matchup["start_yardline"],
+            "tier": tier,  # null if this combo isn't one of the 4 locked/benchmarked tiers
         },
         "state": state,
     }

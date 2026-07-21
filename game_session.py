@@ -1,5 +1,8 @@
 import random
-from sim import resolve_yards, true_key_for_situation, show_signal, FG_RANGE_YARDLINE, FG_MAKE_RATE, PAT_MAKE_RATE
+from sim import (
+    resolve_yards, true_key_for_situation, show_signal, formation_for_signal,
+    FG_RANGE_YARDLINE, FG_MAKE_RATE, PAT_MAKE_RATE,
+)
 from scenario import clock_cost, resolve_touchdown, TWO_PT_MAKE_RATE
 
 # MAX_PLAYS: scenario.py's run_scenario_drive hardcodes this same cap as a bare
@@ -29,10 +32,16 @@ class GameSession:
 
         self._true_key = None
         self._signal = None
+        self._formation = None
 
     def _next_signal(self):
         self._true_key = true_key_for_situation(self.down, self.distance, self.tendency)
         self._signal = show_signal(self._true_key, self.disguise_rate)
+        # formation_for_signal() is a pure rendering-layer draw from the shown
+        # (post-disguise) key -- §7.5, doesn't feed back into play resolution.
+        # Computed once per signal and cached here, not regenerated on every
+        # _state() read, so repeated GET /state calls don't burn extra RNG draws.
+        self._formation = formation_for_signal(self._signal)
 
     def _state(self):
         return {
@@ -41,6 +50,7 @@ class GameSession:
             "yard_line": self.yard_line,
             "clock": max(self.clock, 0),
             "signal": self._signal,
+            "formation": self._formation,
             "done": self.done,
             "result": self.result,
             "points": self.points,

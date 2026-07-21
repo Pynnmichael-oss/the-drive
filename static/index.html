@@ -1,0 +1,220 @@
+<title>Daily Drive</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root { color-scheme: dark; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #0d1117; color: #e6edf3; max-width: 640px; margin: 0 auto; padding: 16px;
+  }
+  h1 { font-size: 1.1rem; font-weight: 600; color: #8b949e; margin: 0 0 12px; }
+  #banner {
+    background: #161b22; border: 1px solid #30363d; border-radius: 8px;
+    padding: 12px 16px; margin-bottom: 14px; line-height: 1.5;
+  }
+  #banner .tier { color: #58a6ff; font-size: 0.9rem; }
+  #hud {
+    display: flex; justify-content: space-between; font-variant-numeric: tabular-nums;
+    background: #161b22; border: 1px solid #30363d; border-radius: 8px;
+    padding: 10px 16px; margin-bottom: 14px; font-size: 0.95rem;
+  }
+  #hud span b { color: #e6edf3; }
+  #formation {
+    background: #161b22; border: 1px solid #30363d; border-radius: 8px;
+    padding: 14px 16px; margin-bottom: 14px;
+  }
+  #formation .label { color: #8b949e; font-size: 0.8rem; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 8px; }
+  #box-row { display: flex; gap: 4px; margin-bottom: 10px; }
+  .box { width: 18px; height: 18px; border-radius: 3px; background: #da3633; }
+  #safety-row { display: flex; gap: 10px; align-items: flex-end; height: 40px; margin-bottom: 8px; }
+  .safety { width: 14px; border-radius: 3px 3px 0 0; background: #58a6ff; }
+  #formation-meta { display: flex; gap: 14px; font-size: 0.85rem; color: #c9d1d9; flex-wrap: wrap; }
+  .blitz-flag { color: #f0883e; font-weight: 600; }
+  #plays { display: flex; gap: 10px; margin-bottom: 14px; }
+  #plays button, #kick-choice button, #restart {
+    flex: 1; padding: 14px 0; font-size: 1rem; font-weight: 600; border-radius: 8px;
+    border: 1px solid #30363d; background: #21262d; color: #e6edf3; cursor: pointer;
+  }
+  #plays button:hover:not(:disabled), #kick-choice button:hover, #restart:hover { background: #30363d; }
+  #plays button:disabled { opacity: 0.4; cursor: default; }
+  #reveal {
+    background: #161b22; border: 1px solid #30363d; border-radius: 8px;
+    padding: 12px 16px; margin-bottom: 14px; min-height: 1.2em; font-size: 0.95rem;
+  }
+  #reveal.turnover { border-color: #da3633; color: #ff7b72; }
+  #reveal.gain { border-color: #238636; }
+  #kick-choice { display: flex; gap: 10px; margin-bottom: 14px; }
+  #kick-choice .odds { display: block; font-weight: 400; font-size: 0.8rem; color: #8b949e; margin-top: 3px; }
+  #final {
+    background: #161b22; border: 1px solid #30363d; border-radius: 8px;
+    padding: 18px 16px; margin-bottom: 14px; text-align: center;
+  }
+  #final .result { font-size: 1.6rem; font-weight: 700; margin-bottom: 6px; }
+  #final .result.WIN { color: #3fb950; }
+  #final .result.TIE { color: #d29922; }
+  #final .result.LOSS { color: #ff7b72; }
+  #final .vs-benchmark { color: #8b949e; font-size: 0.9rem; margin-top: 6px; }
+  .hidden { display: none !important; }
+</style>
+
+<h1>DAILY DRIVE</h1>
+<div id="banner">Loading matchup…</div>
+<div id="hud"></div>
+<div id="formation"></div>
+<div id="reveal"></div>
+<div id="plays">
+  <button data-play="RUN">RUN</button>
+  <button data-play="PASS_SHORT">PASS SHORT</button>
+  <button data-play="PASS_DEEP">PASS DEEP</button>
+</div>
+<div id="kick-choice" class="hidden"></div>
+<div id="final" class="hidden"></div>
+
+<script>
+const API = "";
+let sessionId = null;
+let matchup = null;
+
+function fmtClock(s) {
+  s = Math.max(0, Math.round(s));
+  const m = Math.floor(s / 60), sec = s % 60;
+  return `${m}:${String(sec).padStart(2, "0")}`;
+}
+
+function yardDesc(yardLine) {
+  if (yardLine >= 100) return "goal line";
+  if (yardLine === 50) return "midfield";
+  return yardLine < 50 ? `own ${yardLine}` : `opp ${100 - yardLine}`;
+}
+
+function renderBanner() {
+  const b = document.getElementById("banner");
+  let tierLine = "";
+  if (matchup.tier) {
+    tierLine = `<div class="tier">${matchup.tier.name} tier — validated ${matchup.tier.mean_win_pct}% mean win rate across all 8 archetypes</div>`;
+  } else {
+    tierLine = `<div class="tier">Drawn from the extended non-dead grid — no locked-tier benchmark for this exact combo</div>`;
+  }
+  b.innerHTML = `
+    <div><b>${matchup.archetype}</b> — down ${matchup.deficit}, ${fmtClock(matchup.time_budget)} on the clock,
+    ball on the ${yardDesc(matchup.start_yardline)}</div>
+    ${tierLine}
+  `;
+}
+
+function renderHud(state) {
+  document.getElementById("hud").innerHTML = `
+    <span>Down <b>${state.down}</b> &amp; <b>${state.distance}</b></span>
+    <span>Ball on <b>${yardDesc(state.yard_line)}</b></span>
+    <span>Clock <b>${fmtClock(state.clock)}</b></span>
+  `;
+}
+
+function renderFormation(formation) {
+  const el = document.getElementById("formation");
+  if (!formation) { el.innerHTML = ""; return; }
+  const boxes = Array.from({ length: formation.box_count }, () => `<div class="box"></div>`).join("");
+  const safeties = formation.safety_depths_yards
+    .map(d => `<div class="safety" style="height:${Math.min(d, 20) * 1.6}px" title="${d}yd"></div>`)
+    .join("");
+  el.innerHTML = `
+    <div class="label">Defensive look — box count ${formation.box_count}</div>
+    <div id="box-row">${boxes}</div>
+    <div id="safety-row">${safeties || "<span style='color:#8b949e;font-size:0.85rem'>no deep safety shown</span>"}</div>
+    <div id="formation-meta">
+      <span>Shell: <b>${formation.shell.replace("_", " ")}</b></span>
+      <span>Safeties: <b>${formation.safety_count}</b></span>
+      ${formation.blitz_look ? `<span class="blitz-flag">⚠ blitz look</span>` : ""}
+    </div>
+  `;
+}
+
+function setPlaysEnabled(enabled) {
+  document.querySelectorAll("#plays button").forEach(b => b.disabled = !enabled);
+}
+
+function renderReveal(outcome) {
+  const el = document.getElementById("reveal");
+  if (!outcome) { el.className = ""; el.textContent = ""; return; }
+  if (outcome.turnover) {
+    el.className = "turnover";
+    el.textContent = `${outcome.play} into ${outcome.true_key} (shown ${outcome.signal}) — TURNOVER`;
+  } else {
+    el.className = outcome.yards > 0 ? "gain" : "";
+    el.textContent = `${outcome.play} into ${outcome.true_key} (shown ${outcome.signal}) — ${outcome.yards} yards`;
+  }
+}
+
+function renderKickChoice(pending) {
+  const el = document.getElementById("kick-choice");
+  if (!pending) { el.classList.add("hidden"); el.innerHTML = ""; return; }
+  el.classList.remove("hidden");
+  el.innerHTML = `
+    <button id="kick-pat">Kick PAT<span class="odds">94% — near-certain tie, overtime</span></button>
+    <button id="kick-2pt">Go for 2<span class="odds">48% — immediate win if it hits</span></button>
+  `;
+  document.getElementById("kick-pat").onclick = () => submitKickChoice(false);
+  document.getElementById("kick-2pt").onclick = () => submitKickChoice(true);
+}
+
+function renderFinal(state) {
+  const el = document.getElementById("final");
+  if (!state.done) { el.classList.add("hidden"); el.innerHTML = ""; return; }
+  el.classList.remove("hidden");
+  document.getElementById("plays").classList.add("hidden");
+  let vsBenchmark = "";
+  if (matchup.tier) {
+    vsBenchmark = `<div class="vs-benchmark">${matchup.tier.name} tier benchmark: ${matchup.tier.mean_win_pct}% mean win rate</div>`;
+  }
+  el.innerHTML = `
+    <div class="result ${state.result}">${state.result} — ${state.points} pts</div>
+    ${vsBenchmark}
+    <button id="restart">Play again</button>
+  `;
+  document.getElementById("restart").onclick = startSession;
+}
+
+function applyState(state) {
+  renderHud(state);
+  renderFormation(state.formation);
+  renderKickChoice(state.pending_kick_choice);
+  renderFinal(state);
+  setPlaysEnabled(!state.done && !state.pending_kick_choice);
+}
+
+async function startSession() {
+  document.getElementById("final").classList.add("hidden");
+  document.getElementById("plays").classList.remove("hidden");
+  renderReveal(null);
+  const res = await fetch(`${API}/session/start`, { method: "POST" });
+  const body = await res.json();
+  sessionId = body.session_id;
+  matchup = body.matchup;
+  renderBanner();
+  applyState(body.state);
+}
+
+async function submitPlay(play) {
+  setPlaysEnabled(false);
+  const res = await fetch(`${API}/session/${sessionId}/play`, {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ play }),
+  });
+  const outcome = await res.json();
+  renderReveal(outcome);
+  applyState(outcome);
+}
+
+async function submitKickChoice(goForTwo) {
+  const res = await fetch(`${API}/session/${sessionId}/kick-choice`, {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ go_for_two: goForTwo }),
+  });
+  const state = await res.json();
+  applyState(state);
+}
+
+document.querySelectorAll("#plays button").forEach(btn => {
+  btn.addEventListener("click", () => submitPlay(btn.dataset.play));
+});
+
+startSession();
+</script>
