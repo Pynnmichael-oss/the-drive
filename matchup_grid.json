@@ -1,0 +1,581 @@
+{
+  "deficit_weights": {
+    "1": 9.2,
+    "2": 9.2,
+    "3": 30.1,
+    "4": 11.0,
+    "5": 3.0,
+    "6": 13.1,
+    "7": 18.3,
+    "8": 6.0
+  },
+  "viable_combos_by_deficit": {
+    "1": [
+      {
+        "time_budget": 20,
+        "start_yardline": 50
+      },
+      {
+        "time_budget": 20,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 20,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 30,
+        "start_yardline": 50
+      },
+      {
+        "time_budget": 30,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 30,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 45,
+        "start_yardline": 35
+      },
+      {
+        "time_budget": 45,
+        "start_yardline": 50
+      },
+      {
+        "time_budget": 45,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 45,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 60,
+        "start_yardline": 35
+      },
+      {
+        "time_budget": 60,
+        "start_yardline": 50
+      },
+      {
+        "time_budget": 60,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 60,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 20
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 35
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 50
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 20
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 35
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 50
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 80
+      }
+    ],
+    "2": [
+      {
+        "time_budget": 20,
+        "start_yardline": 50
+      },
+      {
+        "time_budget": 20,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 20,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 30,
+        "start_yardline": 50
+      },
+      {
+        "time_budget": 30,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 30,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 45,
+        "start_yardline": 35
+      },
+      {
+        "time_budget": 45,
+        "start_yardline": 50
+      },
+      {
+        "time_budget": 45,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 45,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 60,
+        "start_yardline": 35
+      },
+      {
+        "time_budget": 60,
+        "start_yardline": 50
+      },
+      {
+        "time_budget": 60,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 60,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 20
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 35
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 50
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 20
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 35
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 50
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 80
+      }
+    ],
+    "3": [
+      {
+        "time_budget": 20,
+        "start_yardline": 50
+      },
+      {
+        "time_budget": 20,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 20,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 30,
+        "start_yardline": 50
+      },
+      {
+        "time_budget": 30,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 30,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 45,
+        "start_yardline": 35
+      },
+      {
+        "time_budget": 45,
+        "start_yardline": 50
+      },
+      {
+        "time_budget": 45,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 45,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 60,
+        "start_yardline": 35
+      },
+      {
+        "time_budget": 60,
+        "start_yardline": 50
+      },
+      {
+        "time_budget": 60,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 60,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 20
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 35
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 50
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 20
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 35
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 50
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 80
+      }
+    ],
+    "4": [
+      {
+        "time_budget": 45,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 60,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 50
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 80
+      }
+    ],
+    "5": [
+      {
+        "time_budget": 60,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 50
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 80
+      }
+    ],
+    "6": [
+      {
+        "time_budget": 45,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 60,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 80
+      }
+    ],
+    "7": [
+      {
+        "time_budget": 20,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 30,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 30,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 45,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 45,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 60,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 60,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 35
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 50
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 35
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 50
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 80
+      }
+    ],
+    "8": [
+      {
+        "time_budget": 20,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 30,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 30,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 45,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 45,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 60,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 60,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 50
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 90,
+        "start_yardline": 80
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 35
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 50
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 65
+      },
+      {
+        "time_budget": 120,
+        "start_yardline": 80
+      }
+    ]
+  },
+  "archetypes": {
+    "Blitz-heavy run stuffer": {
+      "tendency": {
+        "KEY_RUN": 2.0,
+        "KEY_SHORT": 1.0,
+        "KEY_DEEP": 0.7
+      },
+      "disguise_rate": 0.15
+    },
+    "Bend-dont-break prevent": {
+      "tendency": {
+        "KEY_RUN": 0.8,
+        "KEY_SHORT": 1.0,
+        "KEY_DEEP": 2.0
+      },
+      "disguise_rate": 0.35
+    },
+    "Disguise-heavy trickster": {
+      "tendency": {
+        "KEY_RUN": 1.0,
+        "KEY_SHORT": 1.0,
+        "KEY_DEEP": 1.0
+      },
+      "disguise_rate": 0.45
+    },
+    "Zone/underneath spy": {
+      "tendency": {
+        "KEY_RUN": 1.0,
+        "KEY_SHORT": 2.0,
+        "KEY_DEEP": 0.8
+      },
+      "disguise_rate": 0.25
+    },
+    "Aggressive disguised blitz": {
+      "tendency": {
+        "KEY_RUN": 1.8,
+        "KEY_SHORT": 1.0,
+        "KEY_DEEP": 0.9
+      },
+      "disguise_rate": 0.28
+    },
+    "Vanilla base 4-3": {
+      "tendency": {
+        "KEY_RUN": 1.0,
+        "KEY_SHORT": 1.0,
+        "KEY_DEEP": 1.0
+      },
+      "disguise_rate": 0.2
+    },
+    "Robber coverage": {
+      "tendency": {
+        "KEY_RUN": 0.8,
+        "KEY_SHORT": 1.2,
+        "KEY_DEEP": 1.4
+      },
+      "disguise_rate": 0.3
+    },
+    "Amoeba front": {
+      "tendency": {
+        "KEY_RUN": 1.2,
+        "KEY_SHORT": 1.5,
+        "KEY_DEEP": 0.7
+      },
+      "disguise_rate": 0.22
+    }
+  },
+  "meta": {
+    "n_scenario": 1500,
+    "n_ot": 5000,
+    "seed": 12345
+  }
+}

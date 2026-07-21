@@ -1,6 +1,6 @@
 import random
-from sim import resolve_yards, true_key_for_situation, show_signal, FG_RANGE_YARDLINE, FG_MAKE_RATE
-from scenario import clock_cost, resolve_touchdown
+from sim import resolve_yards, true_key_for_situation, show_signal, FG_RANGE_YARDLINE, FG_MAKE_RATE, PAT_MAKE_RATE
+from scenario import clock_cost, resolve_touchdown, TWO_PT_MAKE_RATE
 
 # MAX_PLAYS: scenario.py's run_scenario_drive hardcodes this same cap as a bare
 # literal (25) rather than a named constant -- nothing to import it from yet.
@@ -25,6 +25,7 @@ class GameSession:
         self.points = 0
         self.done = False
         self.result = None
+        self.pending_kick_choice = False
 
         self._true_key = None
         self._signal = None
@@ -43,6 +44,7 @@ class GameSession:
             "done": self.done,
             "result": self.result,
             "points": self.points,
+            "pending_kick_choice": self.pending_kick_choice,
         }
 
     def start(self):
@@ -76,7 +78,14 @@ class GameSession:
         else:
             self.yard_line += yards
             if self.yard_line >= 100:
-                self._finish(resolve_touchdown(self.deficit))
+                if self.deficit == 7:
+                    # §3.8: deficit=7 is the one real kick-vs-2pt decision --
+                    # scenario.py's resolve_touchdown() forces go-for-two here
+                    # (same branch as deficit=8), so it can't be used as-is.
+                    # Pause and let the caller resolve it via resolve_kick_choice().
+                    self.pending_kick_choice = True
+                else:
+                    self._finish(resolve_touchdown(self.deficit))
             elif yards >= self.distance:
                 self.down, self.distance = 1, 10
             else:
@@ -86,14 +95,27 @@ class GameSession:
                     points = 3 if (self.yard_line >= FG_RANGE_YARDLINE and random.random() < FG_MAKE_RATE) else 0
                     self._finish(points)
 
-            if not self.done and self.clock <= 0:
+            if not self.done and not self.pending_kick_choice and self.clock <= 0:
                 points = 3 if (self.yard_line >= FG_RANGE_YARDLINE and random.random() < FG_MAKE_RATE) else 0
                 self._finish(points)
-            elif not self.done and self.plays_run >= MAX_PLAYS:
+            elif not self.done and not self.pending_kick_choice and self.plays_run >= MAX_PLAYS:
                 self._finish(0)
 
-        if not self.done:
+        if not self.done and not self.pending_kick_choice:
             self._next_signal()
 
         outcome.update(self._state())
         return outcome
+
+    def resolve_kick_choice(self, go_for_two):
+        if not self.pending_kick_choice:
+            raise RuntimeError("no kick-vs-2pt decision pending")
+        if go_for_two:
+            made = random.random() < TWO_PT_MAKE_RATE
+            points = 6 + (2 if made else 0)
+        else:
+            made = random.random() < PAT_MAKE_RATE
+            points = 6 + (1 if made else 0)
+        self.pending_kick_choice = False
+        self._finish(points)
+        return self._state()
